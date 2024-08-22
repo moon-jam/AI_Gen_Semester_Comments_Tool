@@ -190,13 +190,13 @@ export default function Home() {
 
           <h3>2. 創建 Excel 檔</h3>
           <p>
-            創建一個 Excel 檔，在 A 欄輸入學生的名字，B 欄輸入學生的幾個特質，類似如下的格式，可以參考 <a href="https://github.com/moon-jam/AI_Gen_Semester_Comments_Tool/blob/main/sample.xlsx" target="_blank" rel="noopener noreferrer">sample.xlsx</a>。
+            創建一個 Excel 檔，在 A 欄輸入學生的名字，B 欄輸入學生的幾個特質，類似如下的格式，可以參考 <a href="https://github.com/moon-jam/AI_Gen_Semester_Comments_Tool/raw/main/sample.xlsx" target="_blank" rel="noopener noreferrer">sample.xlsx</a>。
           </p>
           <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/sample_excel.png" alt="Sample Excel" className={styles.image} />
 
           <h3>3. 上傳檔案並生成評語</h3>
           <p>
-            點擊網頁中的 <code>選擇檔案</code> (`choose file`) 按鈕，選擇剛剛創建的 Excel 檔，然後點擊下方的 <code>生成評語</code> 按鈕，就會開始生成評語了，生成完後點擊 <code>下載結果</code>，就完成了！
+            點擊網頁中的 <span className={styles.highlight}>選擇檔案</span> (<span className={styles.highlight}>Choose File</span>)，選擇剛剛創建的 Excel 檔，然後點擊下方的 <span className={styles.highlight}>生成評語</span>，生成完後點擊 <span className={styles.highlight}>下載結果</span>，就完成了！
           </p>
           <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/process.png" alt="Full Process" className={styles.image} />
         </div>

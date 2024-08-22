@@ -56,5 +56,5 @@ npm run dev
 ![將 API Key 複製然後貼到[網頁](https://ai-comments.moon-jam.me)的框框中](assets/step-5.png)
 - 創建一個 Excel 檔，在 A 欄輸入學生的名字， B 輸入學生的幾個特質，類似如下的格式，可以參考 [`sample.xlsx`](sample.xlsx)
 ![sample excel](assets/sample_excel.png)
-- 接著點擊網頁中的`選擇檔案` (`choose file`) 按鈕，選擇剛剛創建的 Excel 檔，然後點擊下方的`生成評語`按鈕，就會開始生成評語了，生成完後點擊`下載結果`，就完成了！
+- 接著點擊網頁中的`選擇檔案` (`Choose File`)，選擇剛剛創建的 Excel 檔，然後點擊下方的`生成評語`，生成完後點擊`下載結果`，就完成了！
 ![Full Process](assets/process.png)

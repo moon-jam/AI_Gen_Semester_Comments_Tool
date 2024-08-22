@@ -175,3 +175,10 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.highlight {
+  background-color: #d2e9fc;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: bold;
+}
