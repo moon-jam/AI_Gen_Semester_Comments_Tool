@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -6,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaw, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
 import styles from '../styles/Home.module.css';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 Modal.setAppElement('#__next');
 
@@ -162,6 +164,13 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>學期評語生成器</title>
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <meta name="description" content="自動生成學生學期評語的工具，簡單方便，適合教師使用。" />
+        <meta name="keywords" content="學期評語生成, 學生評語, 教師工具, AI 評語生成" />
+      </Head>
+
       {/* 右上角的按鈕 */}
       <button className={styles.helpButton} onClick={openModal}>
         <FontAwesomeIcon icon={faInfoCircle} /> 使用教學
