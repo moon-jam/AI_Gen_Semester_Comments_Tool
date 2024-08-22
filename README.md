@@ -27,4 +27,17 @@ python main.py
 
 可以直接在網頁上使用這個工具
 
-尚未開發，敬請期待...
+- cd 到 `website_version` 資料夾並安裝相關套件
+
+```bash
+cd website_version
+npm install
+```
+
+- 執行網頁
+
+```bash
+npm run dev
+```
+
+- 到 [http://localhost:3000](http://localhost:3000) 開始使用

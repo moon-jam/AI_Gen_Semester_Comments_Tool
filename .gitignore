@@ -1,2 +1,6 @@
 config.py
 __pycache__/
+website_version/practice/
+.DS_Store
+.next/
+node_modules/
