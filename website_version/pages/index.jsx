@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaw, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import Modal from 'react-modal';
 import styles from '../styles/Home.module.css';
+
+Modal.setAppElement('#__next');
 
 export default function Home() {
   const [students, setStudents] = useState([]);
@@ -10,6 +15,9 @@ export default function Home() {
   const [isValidKey, setIsValidKey] = useState(null); // null 表示未驗證，true 表示有效，false 表示無效
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const currentYear = new Date().getFullYear();
+  const copyrightYear = currentYear === 2024 ? '2024' : `2024 – ${currentYear}`;
 
   useEffect(() => {
     const storedApiKey = localStorage.getItem('geminiApiKey');
@@ -144,13 +152,61 @@ export default function Home() {
     saveAs(data, 'output.xlsx');
   };
 
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   return (
     <div className={styles.container}>
+      {/* 右上角的按鈕 */}
+      <button className={styles.helpButton} onClick={openModal}>
+        <FontAwesomeIcon icon={faInfoCircle} /> 使用教學
+      </button>
+      
+      {/* 教學彈出視窗 */}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="使用教學"
+        className={styles.modal}
+        overlayClassName={styles.overlay}
+      >
+        <h2>使用教學</h2>
+        <button onClick={closeModal} className={styles.closeButton}>X</button>
+        <div className={styles.modalContent}>
+          <h3>1. 建立 API Key</h3>
+          <p>
+            先到 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio</a> 建立 API Key (如下圖)，接著將 API Key 複製然後貼到 <a href="https://ai-comments.moon-jam.me" target="_blank" rel="noopener noreferrer">網頁</a> 的框框中，並確認出現 ✅ 圖示，代表 API Key 設定成功。
+          </p>
+          <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/step-1.png" alt="Step 1" className={styles.image} />
+          <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/step-2.png" alt="Step 2" className={styles.image} />
+          <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/step-3.png" alt="Step 3" className={styles.image} />
+          <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/step-4.png" alt="Step 4" className={styles.image} />
+          <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/step-5.png" alt="Step 5" className={styles.image} />
+
+          <h3>2. 創建 Excel 檔</h3>
+          <p>
+            創建一個 Excel 檔，在 A 欄輸入學生的名字，B 欄輸入學生的幾個特質，類似如下的格式，可以參考 <a href="https://github.com/moon-jam/AI_Gen_Semester_Comments_Tool/blob/main/sample.xlsx" target="_blank" rel="noopener noreferrer">sample.xlsx</a>。
+          </p>
+          <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/sample_excel.png" alt="Sample Excel" className={styles.image} />
+
+          <h3>3. 上傳檔案並生成評語</h3>
+          <p>
+            點擊網頁中的 <code>選擇檔案</code> (`choose file`) 按鈕，選擇剛剛創建的 Excel 檔，然後點擊下方的 <code>生成評語</code> 按鈕，就會開始生成評語了，生成完後點擊 <code>下載結果</code>，就完成了！
+          </p>
+          <img src="https://raw.githubusercontent.com/moon-jam/AI_Gen_Semester_Comments_Tool/main/assets/process.png" alt="Full Process" className={styles.image} />
+        </div>
+      </Modal>
+
       <h1 className={styles.title}>學期評語生成器</h1>
       <div className={styles.apiKeyContainer}>
         <input
           type="password"
-          placeholder="輸入您的 API Key"
+          placeholder="輸入您的 Gemini API Key"
           value={apiKey}
           onChange={handleApiKeyChange}
           disabled={isGenerating}
@@ -193,6 +249,26 @@ export default function Home() {
           </div>
         </>
       )}
+      <footer className={styles.footer}>
+        <div className={styles.copyright}>
+          © {copyrightYear}
+          <span className={styles.withLove}> <FontAwesomeIcon icon={faPaw} /> </span>
+          <span className={styles.author} itemProp="copyrightHolder">
+            <a href="https://github.com/moon-jam" target="_blank" rel="noopener noreferrer">Moon Jam</a>
+          </span>
+        </div>
+        <div className={styles.projectInfo}>
+          This project is open-sourced under the MIT license. Visit the project at <a href="https://github.com/moon-jam/AI_Gen_Semester_Comments_Tool" target="_blank" rel="noopener noreferrer">Here</a>.
+        </div>
+      </footer>
     </div>
   );
 }
+
+/*
+TODO (bug) 第一次生成完之後如果要再一次生成，或是要生成其他檔案，需要重新整理
+TODO 應該要讓使用者可以手動修改，增加欄位
+TODO 應該要讓使用者可以選擇要生成的模型
+TODO 讓使用者在不喜歡的生成結果上按下重新生成
+TODO Prompt 還不夠好，隨機性也不夠高，很容易出現 ＸＸ 是個 ＯＯ 的孩子類似的語句
+*/
