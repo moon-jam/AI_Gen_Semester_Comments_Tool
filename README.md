@@ -4,7 +4,7 @@
 
 ## Demo
 
-![Demo](image.png)
+![Demo](assets/Demo.png)
 
 ## Python Version
 
