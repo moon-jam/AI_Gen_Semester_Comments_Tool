@@ -24,16 +24,9 @@ import styles from '../styles/Home.module.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import prompts from '../config/prompts';
+import MODELS from '../config/models';
 
 Modal.setAppElement('#__next');
-
-const MODELS = [
-  'gemini-flash-latest',
-  'gemini-3-flash-preview',
-  'gemini-flash-lite-latest',
-  'gemini-2.5-flash',
-  'gemini-2.5-flash-lite',
-];
 
 export default function Home() {
   // ======== 狀態管理 ========
@@ -50,7 +43,7 @@ export default function Home() {
 
   // 用於在「新增學生」後，自動捲動到表格底部
   const tableEndRef = useRef(null);
-  
+
   // 用於輪替模型的索引
   const modelIndexRef = useRef(0);
 
@@ -117,10 +110,9 @@ export default function Home() {
     }
     try {
       const ai = new GoogleGenAI({ apiKey: key });
-      await ai.models.generateContent({
-        model: 'gemma-3-1b-it',
-        contents: "test",
-      });
+      // 用 models.list() 驗證金鑰：不消耗生成額度，也不依賴某個特定模型是否仍存在
+      const pager = await ai.models.list();
+      for await (const _model of pager) break; // 能成功取得任一模型即代表金鑰有效
       setIsValidKey(true);
     } catch (error) {
       console.error('API Key 驗證失敗', error);
@@ -398,12 +390,8 @@ export default function Home() {
 
   // 實際呼叫 API 生成 (批次)
   const generateBatchComments = async (ai, batch) => {
-    // Round-robin selection
-    const currentModelIndex = modelIndexRef.current % MODELS.length;
-    const modelName = MODELS[currentModelIndex];
-    console.log(`Using model [${currentModelIndex}]: ${modelName}`);
-    
-    // Increment for next call
+    // 輪詢模型：每批換下一個，把用量分散到各模型的免費額度
+    const modelName = MODELS[modelIndexRef.current % MODELS.length];
     modelIndexRef.current += 1;
 
     const response = await ai.models.generateContent({
@@ -426,14 +414,21 @@ export default function Home() {
     });
     // Check for text property (new SDK) or fallback to standard candidate structure
     const text = response.text || response.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
-    
-    // 簡單的清理與解析
+
+    // 解析回應。偶爾（特別是 lite 模型）會多吐字元導致 JSON 無效，
+    // 先嘗試擷取第一個 JSON 陣列；若仍失敗則丟出錯誤，
+    // 讓外層重試並輪到下一個模型，避免把整批學生靜默留白。
     try {
-        return JSON.parse(text);
+      return JSON.parse(text);
     } catch (e) {
-        console.error("JSON Parse Error:", e);
-        console.log("Raw Text:", text);
-        return [];
+      const match = text.match(/\[[\s\S]*\]/);
+      if (match) {
+        try {
+          return JSON.parse(match[0]);
+        } catch (_) { /* 落到下方丟錯 */ }
+      }
+      console.error('JSON Parse Error:', e, text);
+      throw new Error('評語回應解析失敗，將以其他模型重試');
     }
   };
 
