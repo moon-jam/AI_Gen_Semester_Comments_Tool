@@ -8,6 +8,35 @@
   padding: 20px;
 }
 
+/* 新版網頁橫幅（滿版貼齊頂端、纖細半透明） */
+.newBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 16px;
+  background: rgba(0, 112, 243, 0.08);
+  color: #0070f3;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: saturate(150%) blur(6px);
+  -webkit-backdrop-filter: saturate(150%) blur(6px);
+  transition: background 0.15s ease;
+}
+.newBanner:hover {
+  background: rgba(0, 112, 243, 0.14);
+}
+.newBannerArrow {
+  transition: transform 0.15s ease;
+}
+.newBanner:hover .newBannerArrow {
+  transform: translateX(3px);
+}
+
 .title {
   text-align: center;
 }

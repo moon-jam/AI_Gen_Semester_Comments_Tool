@@ -539,7 +539,12 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
+    <>
+      {/* 新版網頁橫幅（貼齊頁面最上方，滿版） */}
+      <a href="/new" className={styles.newBanner}>
+        試試新版網頁 <span className={styles.newBannerArrow}>→</span>
+      </a>
+      <div className={styles.container}>
       <Head>
         <title>AI 學期評語生成器</title>
         <link rel="icon" href="/favicon.png" type="image/png" />
@@ -1063,6 +1068,7 @@ export default function Home() {
         </div>
       </footer>
       <GoogleAnalytics gaId="G-SETTK23KS8" />
-    </div>
+      </div>
+    </>
   );
 }
