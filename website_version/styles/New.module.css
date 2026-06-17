@@ -567,7 +567,10 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== Modal ===== */
+/* ===== Modal =====
+   注意：react-modal 會把彈窗 portal 到 document.body（在 .page 之外），
+   因此這裡不能用定義在 .page 上的 CSS 變數，全部改用實際色值，
+   否則背景會變透明、文字會疊在頁面內容上看不清楚。 */
 .overlay {
   position: fixed;
   inset: 0;
@@ -581,55 +584,56 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--surface);
-  color: var(--ink);
+  background: #ffffff;
+  color: #1a1a1a;
   padding: 30px 32px 26px;
-  border-radius: var(--r-card);
+  border-radius: 12px;
   max-width: 680px;
   width: calc(100% - 32px);
   max-height: 84vh;
-  border: 1px solid var(--border-strong);
+  border: 1px solid #d9d6ce;
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
-  font-family: var(--font-sans);
+  font-family: 'SF Pro Display', 'Helvetica Neue', 'PingFang TC',
+    'Noto Sans TC', 'Microsoft JhengHei', 'Heiti TC', sans-serif;
 }
 .modalEyebrow {
-  font-family: var(--font-mono);
+  font-family: 'SF Mono', 'JetBrains Mono', 'Menlo', ui-monospace, monospace;
   font-size: 10.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #78756e;
   margin: 0 0 6px;
 }
-.modalTitle { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: var(--ink); }
+.modalTitle { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: #1a1a1a; }
 .closeBtn {
   position: absolute;
   top: 22px;
   right: 24px;
   width: 32px;
   height: 32px;
-  border-radius: var(--r-btn);
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--muted);
+  border-radius: 6px;
+  border: 1px solid #d9d6ce;
+  background: #ffffff;
+  color: #78756e;
   cursor: pointer;
   font-size: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-.closeBtn:hover { background: var(--surface-2); color: var(--ink); }
+.closeBtn:hover { background: #f1f0ec; color: #1a1a1a; }
 .modalBody { max-height: 64vh; overflow-y: auto; margin-top: 22px; padding-right: 6px; }
 
 /* 教學步驟：編號 + 內容，靠細線分隔 */
-.step { display: flex; gap: 16px; padding: 20px 0; border-top: 1px solid var(--border); }
+.step { display: flex; gap: 16px; padding: 20px 0; border-top: 1px solid #e8e6e0; }
 .step:first-of-type { border-top: none; padding-top: 4px; }
 .stepNo {
   flex: none;
-  font-family: var(--font-mono);
+  font-family: 'SF Mono', 'JetBrains Mono', 'Menlo', ui-monospace, monospace;
   font-size: 12px;
   font-weight: 500;
   color: #fff;
-  background: var(--ink);
+  background: #1a1a1a;
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -639,40 +643,40 @@
   margin-top: 2px;
 }
 .stepBody { flex: 1; min-width: 0; }
-.stepBody h3 { font-size: 1rem; font-weight: 650; margin: 0 0 8px; color: var(--ink); }
-.stepBody p { line-height: 1.7; color: var(--ink-soft); margin: 8px 0; font-size: 14px; }
-.stepBody a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; font-weight: 550; }
-.stepBody a:hover { color: var(--muted); }
+.stepBody h3 { font-size: 1rem; font-weight: 650; margin: 0 0 8px; color: #1a1a1a; }
+.stepBody p { line-height: 1.7; color: #2f2f2d; margin: 8px 0; font-size: 14px; }
+.stepBody a { color: #1a1a1a; text-decoration: underline; text-underline-offset: 2px; font-weight: 550; }
+.stepBody a:hover { color: #78756e; }
 .modalImg {
   width: 100%;
   margin: 12px 0 4px;
-  border-radius: var(--r-control);
-  border: 1px solid var(--border);
+  border-radius: 8px;
+  border: 1px solid #e8e6e0;
 }
 
 /* 折疊：去除外框，僅以細線分隔 + 銳利 +/- */
-.acc { border-top: 1px solid var(--border); }
+.acc { border-top: 1px solid #e8e6e0; }
 .acc summary {
   list-style: none;
   cursor: pointer;
   padding: 12px 0;
   font-weight: 600;
   font-size: 14px;
-  color: var(--ink);
+  color: #1a1a1a;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .acc summary::-webkit-details-marker { display: none; }
-.acc summary::after { content: '+'; font-family: var(--font-mono); color: var(--muted); font-size: 16px; }
+.acc summary::after { content: '+'; font-family: 'SF Mono', 'JetBrains Mono', 'Menlo', ui-monospace, monospace; color: #78756e; font-size: 16px; }
 .acc[open] summary::after { content: '\2212'; }
 
 .kbd {
-  font-family: var(--font-mono);
+  font-family: 'SF Mono', 'JetBrains Mono', 'Menlo', ui-monospace, monospace;
   font-size: 0.85em;
-  background: var(--surface-2);
-  color: var(--ink);
-  border: 1px solid var(--border-strong);
+  background: #f1f0ec;
+  color: #1a1a1a;
+  border: 1px solid #d9d6ce;
   border-radius: 4px;
   padding: 2px 7px;
 }

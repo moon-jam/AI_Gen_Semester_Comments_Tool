@@ -21,6 +21,7 @@ import {
   faDownload,
   faUsers,
   faWandMagicSparkles,
+  faLightbulb,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
@@ -858,7 +859,7 @@ export default function NewPage() {
 
           <div className={styles.step}>
             <span className={styles.stepNo}>
-              <FontAwesomeIcon icon={faInfoCircle} />
+              <FontAwesomeIcon icon={faLightbulb} />
             </span>
             <div className={styles.stepBody}>
               <h3>小技巧</h3>
